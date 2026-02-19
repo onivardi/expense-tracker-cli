@@ -1,13 +1,18 @@
 [project]
 name = "expense-tracker"
 version = "0.1.0"
-description = "Add your description here"
+description = "A tool to keep tracking your expenses"
 readme = "README.md"
+authors = [
+  {
+    name = "Valdeir Rodrigues", email = "vardii.rodrigues@gmail.com"
+  }
+]
 requires-python = ">=3.14"
 dependencies = []
 
 [project.scripts]
-expense-tracker = "expense_tracker:main"
+expense-tracker = "expense_tracker.cli:main"
 
 [build-system]
 requires = ["uv_build>=0.10.3,<0.11.0"]
