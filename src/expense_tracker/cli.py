@@ -16,10 +16,10 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "list":
-        list()
+        display_expenses()
 
 
-def list():
+def display_expenses():
     file_path = Path(__file__).parent / "my-expenses.csv"
 
     data = pd.read_csv(file_path)
