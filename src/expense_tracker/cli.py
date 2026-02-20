@@ -52,10 +52,10 @@ def add_expense(description: str, amount: str) -> str:
 
     Args:
         description (str): _Description of the expense_
-        amount (str): _description of the amount_
+        amount (str): _Amount spent on the expense_
 
     Returns:
-        str: _description of the return value_
+        str: A success message with the ID of the added expense.
     """
     data = load_data()
     id = data["ID"].iloc[-1] + 1
