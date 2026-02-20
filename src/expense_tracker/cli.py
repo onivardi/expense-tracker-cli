@@ -25,7 +25,20 @@ def main() -> None:
         "-d", "--description", help="Description of your expense", required=True
     )
     parse_add.add_argument(
-        "-a", "--amount", help="How much have you spended", type=int, required=True
+        "-a",
+        "--amount",
+        help="The amount that you have spended(Use only positive value)",
+        type=int,
+        required=True,
+    )
+
+    # Delete a expense from the tracker
+    parse_add = subparsers.add_parser("delete", help="delete a expense")
+    parse_add.add_argument(
+        "--id",
+        help="id of a expense",
+        type=int,
+        required=True,
     )
 
     # Parse the arguments
@@ -37,6 +50,9 @@ def main() -> None:
         print(display)
     elif args.command == "add":
         res = add_expense(args.description, args.amount)
+        print(res)
+    elif args.command == "delete":
+        res = delete_expense(args.id)
         print(res)
 
 
@@ -78,6 +94,15 @@ def add_expense(description: str, amount: int) -> str:
     return f"Expense added successfully (ID: {id})"
 
 
+def delete_expense(id: int) -> str:
+    data = load_data()
+
+    new_data = data.drop(data[data["ID"] == id].index)
+
+    save_data(new_data, ops="w", header=True)
+    return "Expense deleted successfully"
+
+
 def load_data() -> pd.DataFrame:
     """Load the expenses data from the CSV file."""
     file_path = Path(__file__).parent / "my-expenses.csv"
@@ -85,11 +110,11 @@ def load_data() -> pd.DataFrame:
     return pd.read_csv(file_path)
 
 
-def save_data(new_data: pd.DataFrame) -> None:
+def save_data(new_data: pd.DataFrame, ops="a", header=False) -> None:
     """Save a new expense to the tracker."""
     file_path = Path(__file__).parent / "my-expenses.csv"
 
-    new_data.to_csv(file_path, mode="a", header=False, index=False)
+    new_data.to_csv(file_path, mode=ops, header=header, index=False)
 
 
 if __name__ == "__main__":
