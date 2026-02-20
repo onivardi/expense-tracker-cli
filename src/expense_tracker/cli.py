@@ -73,6 +73,8 @@ def add_expense(description: str, amount: int) -> str:
     Returns:
         str: A success message with the ID of the added expense.
     """
+    if not description:
+        raise ValueError("Description cannot be empty")
     if amount < 0:
         raise ValueError("Invalid amount")
 
