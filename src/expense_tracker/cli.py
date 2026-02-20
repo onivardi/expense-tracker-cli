@@ -74,9 +74,9 @@ def add_expense(description: str, amount: int) -> str:
         str: A success message with the ID of the added expense.
     """
     if not description:
-        raise ValueError("Description cannot be empty")
+        raise ValueError("Invalid description. Cannot be empty, Try to use more words.")
     if amount < 0:
-        raise ValueError("Invalid amount")
+        raise ValueError("Invalid amount. Use positive value")
 
     data = load_data()
     id = data["ID"].iloc[-1] + 1
