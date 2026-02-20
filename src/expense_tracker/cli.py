@@ -1,3 +1,5 @@
+"""Expense Tracker CLI"""
+
 import sys
 import argparse
 import pandas as pd
@@ -6,6 +8,9 @@ from datetime import date
 
 
 def main() -> None:
+    """Main function to handle CLI commands."""
+    
+    # Set up the argument parser
     parser = argparse.ArgumentParser(description="Manage expenses.")
     subparsers = parser.add_subparsers(
         help="Available commands", dest="command", required=True
@@ -23,8 +28,10 @@ def main() -> None:
         "-a", "--amount", help="How much have you spended", type=int, required=True
     )
 
+    # Parse the arguments
     args = parser.parse_args()
 
+    # Handle the commands
     if args.command == "list":
         display = display_expenses()
         print(display)
@@ -34,11 +41,22 @@ def main() -> None:
 
 
 def display_expenses() -> str:
+    """Display the list of expenses in a tabular format."""
     data = load_data()
+
     return data.to_string(index=False)
 
 
 def add_expense(description: str, amount: str) -> str:
+    """Add a new expense to the tracker.
+
+    Args:
+        description (str): _Description of the expense_
+        amount (str): _description of the amount_
+
+    Returns:
+        str: _description of the return value_
+    """
     data = load_data()
     id = data["ID"].iloc[-1] + 1
 
@@ -53,17 +71,21 @@ def add_expense(description: str, amount: str) -> str:
         ]
     )
     save_data(new_entry)
+
     return f"Expense added successfully (ID: {id})"
 
 
 def load_data() -> pd.DataFrame:
+    """Load the expenses data from the CSV file."""
     file_path = Path(__file__).parent / "my-expenses.csv"
 
     return pd.read_csv(file_path)
 
 
 def save_data(new_data: pd.DataFrame) -> None:
+    """Save a new expense to the tracker."""
     file_path = Path(__file__).parent / "my-expenses.csv"
+
     new_data.to_csv(file_path, mode="a", header=False, index=False)
 
 
