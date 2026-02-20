@@ -9,7 +9,7 @@ from datetime import date
 
 def main() -> None:
     """Main function to handle CLI commands."""
-    
+
     # Set up the argument parser
     parser = argparse.ArgumentParser(description="Manage expenses.")
     subparsers = parser.add_subparsers(
@@ -47,7 +47,7 @@ def display_expenses() -> str:
     return data.to_string(index=False)
 
 
-def add_expense(description: str, amount: str) -> str:
+def add_expense(description: str, amount: int) -> str:
     """Add a new expense to the tracker.
 
     Args:
@@ -57,6 +57,9 @@ def add_expense(description: str, amount: str) -> str:
     Returns:
         str: A success message with the ID of the added expense.
     """
+    if amount < 0:
+        raise ValueError("Invalid amount")
+
     data = load_data()
     id = data["ID"].iloc[-1] + 1
 
