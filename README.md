@@ -70,6 +70,7 @@ ID,Date,Description,Amount
 Notes:
 - `Amount` values are stored with a leading dollar sign (e.g. `$12`).
 - The CSV is appended to when adding an expense; deleting rewrites the file.
+- [Roadmap.sh][https://roadmap.sh/projects/expense-tracker]
 
 **Development**
 - To inspect and edit the CLI, see [src/expense_tracker/cli.py](src/expense_tracker/cli.py).
