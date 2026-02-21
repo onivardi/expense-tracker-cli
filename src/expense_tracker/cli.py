@@ -5,6 +5,7 @@ import argparse
 import pandas as pd
 from pathlib import Path
 from datetime import date
+import calendar
 
 
 def main() -> None:
@@ -17,15 +18,23 @@ def main() -> None:
     )
 
     # List subcommand
-    subparsers.add_parser("list", help="List a table of expensses")
+    subparsers.add_parser("list", help="Display a table of expensses")
+
+    # Summary the entire expenses
+    parse_summary = subparsers.add_parser("summary", help="Summary the expenses")
+    parse_summary.add_argument(
+        "--month",
+        type=int,
+        choices=range(1, 12),
+        help="Summary the expenses on given month",
+    )
 
     # Add a expense to the tracker
     parse_add = subparsers.add_parser("add", help="Add a expense")
     parse_add.add_argument(
-        "-d", "--description", help="Description of your expense", required=True
+        "--description", help="Description of your expense", required=True
     )
     parse_add.add_argument(
-        "-a",
         "--amount",
         help="The amount that you have spended(Use only positive value)",
         type=int,
@@ -54,6 +63,33 @@ def main() -> None:
     elif args.command == "delete":
         res = delete_expense(args.id)
         print(res)
+    elif args.command == "summary":
+        res = summary_expenses(args.month)
+        print(res)
+
+
+def summary_expenses(month: int) -> str:
+    """Summary the expenses for a given month or all expenses if month is not provided.
+    Args:
+        month (int): _Month number (1-12) to filter expenses. If not provided, summary for all expenses._
+        Returns: str: _Summary of expenses for the specified month or all expenses._""" 
+    data = load_data()
+
+    # Convert them to the right type
+    data["Date"] = pd.to_datetime(data["Date"])
+    data["Amount"] = data["Amount"].str.replace("$", "").astype("int")
+
+    # Data with month selected or all expenses
+    total = (
+        data[data["Date"].dt.month == month]["Amount"].sum()
+        if month
+        else data["Amount"].sum()
+    )
+
+    if month:
+        return f"Total expenses for {calendar.month_name[month]}: ${total}"
+
+    return f"Total expenses: ${total}"
 
 
 def display_expenses() -> str:
@@ -102,6 +138,7 @@ def delete_expense(id: int) -> str:
     new_data = data.drop(data[data["ID"] == id].index)
 
     save_data(new_data, ops="w", header=True)
+
     return "Expense deleted successfully"
 
 
