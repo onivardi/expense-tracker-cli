@@ -93,7 +93,9 @@ def summary_expenses(month: int) -> str:
 
 
 def display_expenses() -> str:
-    """Display the list of expenses in a tabular format."""
+    """Display the list of expenses in a tabular format.
+    Returns:
+        str: A string representation of the expenses table."""
     data = load_data()
 
     return data.to_string(index=False)
@@ -133,6 +135,14 @@ def add_expense(description: str, amount: int) -> str:
 
 
 def delete_expense(id: int) -> str:
+    """Delete an expense from the tracker.
+
+    Args:
+        id (int): The ID of the expense to delete.
+
+    Returns:
+        str: A success message indicating the expense was deleted.
+    """
     data = load_data()
 
     new_data = data.drop(data[data["ID"] == id].index)
@@ -143,14 +153,22 @@ def delete_expense(id: int) -> str:
 
 
 def load_data() -> pd.DataFrame:
-    """Load the expenses data from the CSV file."""
+    """Load the expenses data from the CSV file.
+    Returns:
+        pd.DataFrame: A DataFrame containing the expenses data."""
     file_path = Path(__file__).parent / "my-expenses.csv"
 
     return pd.read_csv(file_path)
 
 
 def save_data(new_data: pd.DataFrame, ops="a", header=False) -> None:
-    """Save a new expense to the tracker."""
+    """Save a new expense to the tracker.
+    Args:
+        new_data (pd.DataFrame): The new expense data to save.
+        ops (str, optional): The file mode to use when saving the data. Defaults to "a" (append).
+        header (bool, optional): Whether to include the header in the CSV file. Defaults to False.
+        
+        Returns: None: This function does not return anything."""
     file_path = Path(__file__).parent / "my-expenses.csv"
 
     new_data.to_csv(file_path, mode=ops, header=header, index=False)
