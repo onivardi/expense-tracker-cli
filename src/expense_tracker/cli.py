@@ -111,9 +111,9 @@ def add_expense(description: str, amount: int) -> str:
     Returns:
         str: A success message with the ID of the added expense.
     """
-    if not description:
+    if not isinstance(description, str) or len(description.strip()) == 0:
         raise ValueError("Invalid description. Cannot be empty, Try to use more words.")
-    if amount < 0:
+    if not isinstance(amount, int) or amount <= 0:
         raise ValueError("Invalid amount. Use positive value")
 
     data = load_data()
