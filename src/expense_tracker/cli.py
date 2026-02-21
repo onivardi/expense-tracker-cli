@@ -72,7 +72,11 @@ def summary_expenses(month: int) -> str:
     """Summary the expenses for a given month or all expenses if month is not provided.
     Args:
         month (int): _Month number (1-12) to filter expenses. If not provided, summary for all expenses._
-        Returns: str: _Summary of expenses for the specified month or all expenses._""" 
+        Returns: str: _Summary of expenses for the specified month or all expenses._"""
+        
+    if month and (month < 1 or month > 12):
+        raise ValueError("Invalid month. Use a value between 1 and 12.")
+    
     data = load_data()
 
     # Convert them to the right type
