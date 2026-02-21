@@ -143,6 +143,9 @@ def delete_expense(id: int) -> str:
     Returns:
         str: A success message indicating the expense was deleted.
     """
+    if not isinstance(id, int) or id < 0:
+        raise ValueError("Invalid ID. Use a positive integer value.")
+    
     data = load_data()
 
     new_data = data.drop(data[data["ID"] == id].index)
